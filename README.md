@@ -11,138 +11,164 @@ To create a two screens , first screen will take one number input from user. Aft
 Latest Version Android Studio
 
 ## ALGORITHM:
-1.Start Android Studio and create a new project.
+Step 1: Open Android Stdio and then click on File -> New -> New project.
 
-2.Design the first screen (Activity 1) with:
+Step 2: Then type the Application name as ImplicitIntent and click Next.
 
-    An EditText to input a number.
-    A Button labeled "Factorial".
-3.In Activity 1:
-    Get the number entered by the user.
+Step 3: Then select the Minimum SDK as shown below and click Next.
 
-4.Create an Explicit Intent to navigate to Activity 2.
+Step 4: Then select the Empty Activity and click Next. Finally click Finish.
 
-5.Put the entered number into the intent using putExtra().
+Step 5: Design layout in activity_main.xml.
 
-6.Start Activity 2 with this intent.
+Step 6: Display message give in MainActivity file.
 
-In Activity 2:
-
-Retrieve the number from the intent using getIntent().getIntExtra().
-
-7.Calculate the factorial of the number using a loop or recursion.
-
-8.Display the factorial result on the screen (e.g., in a TextView).
+Step 7: Save and run the application
 
 
 ## PROGRAM:
 ```
 /*
 Program to print the text “ExplicitIntent”.
-Developed by:DHINESH R
-Registeration Number :212223220019
+Developed by: DHINESH R
+Registeration Number : 212223220019
 */
 ```
-activity_main.xml
+ACTIVITY MAIN.XML
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SecondActivity">
 
-    <Button
-        android:id="@+id/explicitButton"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Explicit Intent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="This is Second Activity"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"/>
 
+    <!-- Button -->
+    <Button
+        android:id="@+id/btnGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GO TO HOME ACTIVITY"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
-MainActivity.java
+MAIN ACTIVITY . JAVA
 ```
-package com.example.explicitintentdemo; // Replace with your package name
+package com.example.exp02explicit;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Button explicitButton = findViewById(R.id.explicitButton);
-
-        explicitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an explicit intent to open SecondActivity
-                // The first parameter is the context (current activity)
-                // The second parameter is the class of the new activity to start
-                Intent explicitIntent = new Intent(MainActivity.this, com.example.explicitintentdemo.SecondActivity.class);
-
-                // Start the new activity
-                startActivity(explicitIntent);
-            }
+        // Button click → Open SecondActivity
+        Button btnGo = findViewById(R.id.btnGo);
+        btnGo.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
         });
     }
 }
+
 ```
-activity_second.xml
+##ANDROID MANIFEST.XML
 ```
+
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SecondActivity">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/secondActivityTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is Second Activity"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Exp02Explicit">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Main Activity (Launcher) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Second Activity (for explicit intent) -->
+        <activity
+            android:name=".SecondActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
+
 ```
-SecondActivity.java
+##SECOND ACTIVITY.JAVA
 ```
-package com.example.explicitintentdemo;
+package com.example.exp02explicit;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SecondActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_second);
-        // Your code here, but for this experiment, this is all you need.
+
+        // Button click → Go back to MainActivity
+        Button btnGoBack = findViewById(R.id.btnGoBack);
+        btnGoBack.setOnClickListener(v -> {
+            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 }
+
 ```
 
+
+
 ## OUTPUT
-<img width="349" height="599" alt="image" src="https://github.com/user-attachments/assets/329f54a4-acf7-491a-be9f-e137c5a0a172" />
+<img width="1920" height="1200" alt="Screenshot (70)" src="https://github.com/user-attachments/assets/de565367-63a1-4931-82ce-16f1cb0198a5" />
+
 
 
 
